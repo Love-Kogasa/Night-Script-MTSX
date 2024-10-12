@@ -1,0 +1,84 @@
+{
+    name: [ "Night-TypeScript", ".ts", ".tsx", ".mts" ]
+    comment: {startsWith: "//"}
+    comment: {startsWith: "/*", endsWith: "*/"}
+    styles: [
+        "default", #09A, #AAF
+        "string", #C25, #FBB
+        "symbol", #559, #DDE
+        "number", #A10, #F20
+        "funcname", #077, #0FF
+        "objname", #6A6, #DFD
+        "keyword", #959, #FAF, @I
+        "classname", #757, #DAD
+        "objkey", #056, #ADF, @I
+        "typekey", #056$AEF, #ADF$023, @I
+        "error", #F00#FAA, #F00#900
+        "errorline", #F00$FAA, #F00$900, @I
+        "funcline" #959$FDF, #FAF$404, @I
+        "pathstr" > "string", @U
+        "strEscape" > "keyword"
+    ]
+    defines: [
+        "id": /\b[a-zA-Z_]\w*\b/
+        "func": {match: include("id") + /\s*(?= *\()/, 0: "funcname"}
+        "obj": {match: include("id") + /\s*\./, 0: "objname"}
+        "class": {match: /\s[A-Z]\w*/, 0: "classname"}
+        "type": {match: /\:\s*\w*/, 0: "objkey"}
+        "cthrow": {match: keywordsToRegex( "throw" ), 0: "errorline" }
+        "keywords": {match: keywordsToRegex(
+            "break case catch const continue debugger default delete do else enum extends false finally for if implements instanceof let new null package private protected public return static super switch this with true try typeof var void while yield async await of undefined from in as while for switch case default declare"
+        ), 0: "keyword" }
+        "symbols" : {match: keywordsToRegex(
+            "{ } [ ] = ( ) $ > < >= <= ! != == === + - * / % ? | & ,"
+        ), 0: "symbol" }
+        "methods" : {match: keywordsToRegex(
+            "function => class import export namespace"
+        ), 0: "funcline" }
+        "typeval":  {match: keywordsToRegex(
+            "type interface"
+        ), 0: "typekey" }
+        "tmpstr": {
+            style: "string"
+            start: {match: /\`/ }
+            end: {match: /\`/ }
+            contains: [
+                {include: "codec"}
+            ]
+        }
+        "codec": {
+            start: {match: /\$\{/}
+            end: {match: /\}/}
+            style: "keyword"
+            contains: [
+                {include: "symbols"}
+                {include: "cthrow"}
+                {include: "methods"}
+                {include: "typeval"}
+                {include: "keywords"}
+                {include: "func"}
+                {include: "class"}
+                {include: "obj"}
+                {include: "type"}
+                {include: "tmpstr"}
+                {builtin: #JAVA_NUMBER#}
+                {builtin: #C_QUOTED_STRING#}
+            ]
+        }
+    ]
+    contains: [
+        {match: /\#.*/, 0: "error"}
+        {include: "symbols"}
+        {include: "cthrow"}
+        {include: "methods"}
+        {include: "typeval"}
+        {include: "keywords"}
+        {include: "func"}
+        {include: "class"}
+        {include: "obj"}
+        {include: "type"}
+        {include: "tmpstr"}
+        {builtin: #JAVA_NUMBER#}
+        {builtin: #C_QUOTED_STRING#}
+    ]
+}

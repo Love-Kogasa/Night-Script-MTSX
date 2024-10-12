@@ -1,0 +1,109 @@
+{
+    name: ["Night-CoffeeScript", ".coffee", ".ls" ]
+    // .ls > LiveScript
+    comment: {startsWith: "#"}
+    // Night styles ↓
+    styles: [
+        "default", #09A, #AAF
+        "symbol", #559, #DDE
+        "string", #C25, #FBB
+        "pathstr" > "string", @U
+        "number", #A10, #F20
+        "funcname", #077, #0FF
+        "objname", #6A6, #DFD
+        "thisname", #6A6#DFD, #DFD#242
+        "keyword", #959, #FAF, @I
+        "classname", #757, #DAD
+        "objkey", #056, #ADF
+        "value", #449#DDF, #AAF#225
+        "error", #F00#FAA, #F00#900
+        "errorline", #F00$FAA, #F00$900, @I
+        "funcline" #959$FDF, #FAF$404, @I
+    ]
+    defines: [
+        "codein-quick": {match: /#\w*/, 0: "keyword"}
+        "function" : {match: /\w*(\ |\!|(?= *\())/, 0: "funcname"}
+        "object" : {match: /\w*\s*\./, 0: "objname"}
+        "class" : {match: /\s[A-Z]\w*/, 0: "classname"}
+        "this" : {match: /\@\w*/, 0: "thisname"}
+        "keyfor" : {match: /\w*\s\:/, 0: "objkey"}
+        "funcval" : {match: /(\-\>|function\s|class\s)/, 0: "funcline"}
+        "evalstr" : {match: /\\\w*/, 0: "string"}
+        "keywords" : {match: keywordsToRegex(
+            "while for loop switch case default from in of to import require! delate continue goto yes no true false if else do is isnt not static super try catch finally yield async await return extends instanceof then undefined it void export new"
+        ), 0: "keyword"}
+        "symbols" : {match: keywordsToRegex(
+            "{ } [ ] = ( ) $ > < >= <= ! != == === + - * / % ? | & ,"
+        ), 0: "symbol" }
+        "codein": {
+            style: "keyword"
+            start: {match: /\#\{/}
+            end: {match: /\}/}
+            contains: [
+                {include: "stringDouble"}
+                {include: "string"}
+                {include: "evalstr"}
+                {include: "regex"}
+                {include: "keywords"}
+                {include: "funcval"}
+                {include: "symbols"}
+                {include: "class"}
+                {include: "object"}
+                {include: "function"}
+                {include: "this"}
+                {builtin: #JAVA_NUMBER#}
+            ]
+        }
+        "stringDouble": {
+            style: "string"
+            start: {match: /"/}
+            end: {match: /"/}
+            contains: [
+                {match: /\\./, 0: "keyword"}
+                {include: "codein"}
+                {include: "codein-quick"}
+            ]
+        }
+        "string": {
+            style: "string"
+            start: {match: /"/}
+            end: {match: /"/}
+            contains: [
+                {match: /\\./, 0: "keyword"}
+                {include: "codein"}
+                {include: "codein-quick"}
+            ]
+        }
+        "regex": {
+            start: {match: /(?<=(?:[=,(&|!:;]|^|\breturn)\s{0,20})/ + "/"}
+            end: {match: "/" + /([img]*)/, 1: "objkey"}
+            style: "symbol"
+            contains: [
+                {match: /\\./, 0: "keyword"}
+                {
+                    start: {match: /\[/}
+                    end: {match: /\]/}
+                    contains: [
+                        {match: /\\./, 0: "keyword"}
+                    ]
+                }
+            ]
+        }
+    ]
+    contains: [
+        {match: keywordsToRegex("throw"), 0: "errorline"}
+        {include: "keywords"}
+        {include: "regex"}
+        {include: "funcval"}
+        {include: "symbols"}
+        {include: "stringDouble"}
+        {include: "string"}
+        {include: "evalstr"}
+        {include: "keyfor"}
+        {include: "class"}
+        {include: "function"}
+        {include: "object"}
+        {include: "this"}
+        {builtin: #JAVA_NUMBER#}
+    ]
+}

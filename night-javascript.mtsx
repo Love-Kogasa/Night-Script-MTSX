@@ -1,0 +1,119 @@
+{
+    name: ["Night-JavaScript", ".mjs", ".js", ".jsx", ".es" ]
+    comment: {startsWith: "//"}
+    comment: {startsWith: "/*", endsWith: "*/"}
+    styles: [
+        "default", #09A, #AAF
+        "string", #C25, #FBB
+        "symbol", #559, #DDE
+        "number", #A10, #F20
+        "funcname", #077, #0FF
+        "objname", #6A6, #DFD
+        "keyword", #959, #FAF, @I
+        "classname", #757, #DAD
+        "objkey", #056, #ADF
+        "value", #449, #AAF
+        "error", #F00#FAA, #F00#900
+        "errorline", #F00$FAA, #F00$900, @I
+        "funcline" #959$FDF, #FAF$404, @I
+        "pathstr" > "string", @U
+        "strEscape" > "keyword"
+    ]
+    defines: [
+        "id": /\b[a-zA-Z_]\w*\b/
+        //"path" : {match: /([^\/\n]+\/)*/, 0: "pathstr" }
+        //bug较多 索性去掉了
+        "single-quoted-string": {
+            style: "string"
+            start: {match: /'/}
+            end: {match: /(?m)'|$/}
+            contains: [
+                {match: /\\\n/, 0: "keyword"}
+                {builtin: #C_ESCAPED_CHAR#}
+                //{include: "path"}
+            ]
+        }
+        "double-quoted-string": {
+            style: "string"
+            start: {match: /"/}
+            end: {match: /(?m)"|$/}
+            contains: [
+                {match: /\\\n/, 0: "keyword"}
+                {builtin: #C_ESCAPED_CHAR#}
+                //{include: "path"}
+            ]
+        }
+        "backtick-string": {
+            style: "string"
+            start: {match: /`/}
+            end: {match: /`/}
+            contains: [
+                {match: /\\`/, 0: "keyword"}
+                {include: "dollarExp"}
+                {builtin: #C_ESCAPED_CHAR#}
+                //{include: "path"}
+            ]
+        }
+        "regex": {
+            start: {match: /(?<=(?:[=,(&|!:;]|^|\breturn)\s{0,20})/ + "/"}
+            end: {match: "/" + /([img]*)/, 1: "objkey"}
+            style: "symbol"
+            contains: [
+                {match: /\\./, 0: "keyword"}
+                {
+                    start: {match: /\[/}
+                    end: {match: /\]/}
+                    contains: [
+                        {match: /\\./, 0: "keyword"}
+                    ]
+                }
+            ]
+        }
+        "dollarExp": {
+            start: {match: /\$\{/}
+            end: {match: /\}/}
+            style: "keyword"
+            contains: [
+                {include: "single-quoted-string"}
+                {include: "double-quoted-string"}
+                {include: "regex"}
+                {include: "backtick-string"}
+                {include: "dollarExp"}
+                {builtin: #JAVA_NUMBER#}
+                {match: include("id") + /(?= *\()/, 0: "funcname" }
+                {match: include("id") + /\s*\./, 0: "objname" }
+                {match: include("id") + /\s*\:/, 0: "objkey" }
+                {match: /\s[A-Z]\w*/, 0: "classname" }
+            ]
+        }
+    ]
+    contains: [
+        {include: "single-quoted-string"}
+        {include: "double-quoted-string"}
+        {include: "regex"}
+        {include: "backtick-string"}
+        {builtin: #JAVA_NUMBER#}
+        {match: keywordsToRegex(
+            "function => class import export"
+        ), 0: "funcline" }
+        {match: keywordsToRegex(
+            "break case catch const continue debugger default delete do else enum"
+            "extends false finally for if implements instanceof interface let"
+            "new null package private protected public return static super switch this with"
+            "true try typeof var void while yield async await of undefined from in as while for switch case default"
+        ), 0: "keyword" }
+        {match: keywordsToRegex(
+            "{ } [ ] = ( ) $ > < >= <= ! != == === + - * / % ? | & ,"
+        ), 0: "symbol" }
+        {match: keywordsToRegex(
+            "throw"
+        ), 0: "errorline" }
+        {match: include("id") + /(?= *\()/, 0: "funcname" }
+        {match: include("id") + /\s*\./, 0: "objname" }
+        {match: include("id") + /\s*\:/, 0: "objkey" }
+        {match: /\s[A-Z]\w*/, 0: "classname" }
+        {match: /\#.*/, 0: "error" }
+        {match: include("id") + /\s*=\s*function/, 0: "funcline" }
+    ]
+    codeFormatter: #BUILT_IN_JS_FORMATTER#
+}
