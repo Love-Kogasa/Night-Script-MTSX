@@ -1,0 +1,69 @@
+{
+    name: [ "Night-JSON5", ".json5", ".json" ]
+    comment: {startsWith: "//"}
+    comment: {startsWith: "/*", endsWith: "*/"}
+    styles: [
+        "default", #09A, #AAF
+        "string", #C25, #FBB
+        "symbol", #559, #DDE
+        "number", #A10, #F20
+        "keyword", #959, #FAF, @I
+        "objkey", #056, #ADF
+        "error", #F00#FAA, #F00#900
+        "pathstr" > "string", @U
+        "strEscape" > "keyword"
+    ]
+    defines: [
+        "key" : {match: /\w+\s*\:/, 0: "objkey"}
+        "keywords": {match: keywordsToRegex(
+            "null true false"
+        ), 0: "keyword"}
+        "comment": {match: /\/\/.*/,0: "comment"}
+        "comment_ml": {
+            start: {match: /\/\*/}
+            end: {match: /\*\//}
+            style: "comment"
+        }
+        "array" : {
+            start: {match: /\[/}
+            end: {match: /\]/}
+            style: "symbol"
+            contains: {
+                {include: "comment"}
+                {include: "comment_ml"}
+                {builtin: #JAVA_NUMBER#}
+                {builtin: #C_QUOTED_STRING#}
+                {include: "keywords"}
+                {include: "object"}
+                {include: "array"}
+                {match: /\,(?=\s*\])/, 0: "error"}
+                {match: /\w+\s*\:/, 0: "error"}
+            }
+        }
+        "object" : {
+            start: {match: /\{/}
+            end: {match: /\}/}
+            style: "symbol"
+            contains: {
+                {include: "comment"}
+                {include: "comment_ml"}
+                {builtin: #JAVA_NUMBER#}
+                {builtin: #C_QUOTED_STRING#}
+                {include: "key"}
+                {include: "keywords"}
+                {include: "object"}
+                {include: "array"}
+                {match: /\w+(?=\s*\w+)/, 0: "error"}
+                {match: /\,(?=\s*\})/, 0: "error"}
+            }
+        }
+    ]
+    contains: [
+        {include: "object"}
+        {include: "array"}
+        {include: "keywords"}
+        {match: /\s*\w+\s*\:\s*/, 0: "error"}
+        {builtin: #JAVA_NUMBER#}
+        {builtin: #C_QUOTED_STRING#}
+    ]
+}
