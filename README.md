@@ -35,7 +35,7 @@
 * 更新jsdoc(特殊注释高亮)
 ![sc](https://postimage.me/images/2024/10/13/Screenshot_2024-10-13-17-38-04-050_bin.mt.plus-edit.jpg)
 ## ~~吐槽~~
-~~Byd你个mtPY高亮都更新了，就不能更一下js的，icon也给，TS出了Js还是没更，真的是(~~
+~~mt你PY高亮都更新了，就不能更一下js的，icon也是，TS出了Js还是没怎么改(~~
 
 ***
 # Support 赞助开发者
