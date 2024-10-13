@@ -1,7 +1,6 @@
 {
     name: ["Night-JavaScript", ".mjs", ".js", ".jsx", ".es" ]
     comment: {startsWith: "//"}
-    comment: {startsWith: "/*", endsWith: "*/"}
     styles: [
         "default", #09A, #AAF
         "string", #C25, #FBB
@@ -69,6 +68,19 @@
                 }
             ]
         }
+        "jsdoc": {
+            start: {match: /\/\*/}
+            end: {match: /\*\//}
+            style: "comment"
+            contains: [
+                {match: /\@\w+/, 0: "objkey"}
+                {match: /[A-Z]+:.+/, 0: "number"}
+                {match: /\?.+/, 0: "string"}
+                {match: /\!.+/, 0: "errorline"}
+                {match: /\ *\w+(?=\s*\-)/, 0: "funcname"}
+                {match: /\w+\[*\]*(?=\})/, 0: "classname"}
+            ]
+        }
         "dollarExp": {
             start: {match: /\$\{/}
             end: {match: /\}/}
@@ -88,6 +100,7 @@
         }
     ]
     contains: [
+        {include: "jsdoc"}
         {include: "single-quoted-string"}
         {include: "double-quoted-string"}
         {include: "regex"}
@@ -115,5 +128,4 @@
         {match: /\#.*/, 0: "error" }
         {match: include("id") + /\s*=\s*function/, 0: "funcline" }
     ]
-    codeFormatter: #BUILT_IN_JS_FORMATTER#
 }

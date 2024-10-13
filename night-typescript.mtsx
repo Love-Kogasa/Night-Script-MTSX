@@ -1,7 +1,6 @@
 {
     name: [ "Night-TypeScript", ".ts", ".tsx", ".mts" ]
     comment: {startsWith: "//"}
-    comment: {startsWith: "/*", endsWith: "*/"}
     styles: [
         "default", #09A, #AAF
         "string", #C25, #FBB
@@ -38,6 +37,19 @@
         "typeval":  {match: keywordsToRegex(
             "type interface"
         ), 0: "typekey" }
+        "jsdoc": {
+            start: {match: /\/\*/}
+            end: {match: /\*\//}
+            style: "comment"
+            contains: [
+                {match: /\@\w+\ +/, 0: "objkey"}
+                {match: /[A-Z]+:.+/, 0: "number"}
+                {match: /\?.+/, 0: "string"}
+                {match: /\!.+/, 0: "errorline"}
+                {match: /\ *\w+(?=\s*\-)/, 0: "funcname"}
+                {match: /\w+\[*\]*(?=\})/, 0: "classname"}
+            ]
+        }
         "tmpstr": {
             style: "string"
             start: {match: /\`/ }
@@ -51,6 +63,7 @@
             end: {match: /\}/}
             style: "keyword"
             contains: [
+                {include: "jsdoc"}
                 {include: "symbols"}
                 {include: "cthrow"}
                 {include: "methods"}
@@ -68,6 +81,7 @@
     ]
     contains: [
         {match: /\#.*/, 0: "error"}
+        {include: "jsdoc"}
         {include: "symbols"}
         {include: "cthrow"}
         {include: "methods"}
