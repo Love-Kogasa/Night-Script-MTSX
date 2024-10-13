@@ -1,0 +1,15 @@
+key : null
+{
+  // Test注释
+  key : null,
+  novalue
+  unvalue : value
+  bugwithbug : { key : 1, },
+  "string key" : true,
+  // 字符key
+  array : [
+    /*多行注释www*/
+    "string1",
+    "string2",
+  ], 
+}
