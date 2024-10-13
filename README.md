@@ -17,7 +17,8 @@
 ## Files 语法文件列表
 `night-javascript.mtsx` Night **js/es/jsx** 语法高亮.  
 `night-coffeescript.mtsx` Night **coffee/ls/lson** 语法高亮  
-`night-typescript.mtsx` Night **ts/js++** 语法高亮  
+`night-typescript.mtsx` Night**ts/js++** 语法高亮  
+`markup-langs/night-json5.mtsx` Night **json/json5** 语法高亮  
 其他Js相关语言我会慢慢更新的
 ## License 使用许可
 不打算用任何一种许可协议，包括*MIT*以及*ISC*.  
@@ -25,6 +26,14 @@
 * 允许将本项目分享给朋友使用，但论坛发布需要附带GH仓库或者我的邮箱地址
 * 允许更改配色/改进代码/创建分支再发布
 * 不允许在不经我同意的情况下将本项目用于盈利活动(比如售卖)
+## Logs 更新日志
+### v1.0
+* 候补
+### v1.1
+* 更新Json5高亮
+![Screenshot](https://postimage.me/images/2024/10/13/Screenshot_2024-10-13-15-03-52-583_bin.mt.plus-edit.jpg)
+* 更新jsdoc(特殊注释高亮)
+![sc](https://postimage.me/images/2024/10/13/Screenshot_2024-10-13-17-38-04-050_bin.mt.plus-edit.jpg)
 ## ~~吐槽~~
 ~~Byd你个mtPY高亮都更新了，就不能更一下js的，icon也给，TS出了Js还是没更，真的是(~~
 
