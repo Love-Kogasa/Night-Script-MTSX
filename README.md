@@ -34,6 +34,11 @@
 ![Screenshot](https://postimage.me/images/2024/10/13/Screenshot_2024-10-13-15-03-52-583_bin.mt.plus-edit.jpg)
 * 更新jsdoc(特殊注释高亮)
 ![sc](https://postimage.me/images/2024/10/13/Screenshot_2024-10-13-17-38-04-050_bin.mt.plus-edit.jpg)
+### v1.2
+* 修复一些小bug
+* 支持模板字符串内嵌变量内注释高亮
+* *Jsx/Tsx* 高亮支持
+![jsx](https://postimage.me/images/2024/10/15/Screenshot_2024-10-15-20-10-34-571_bin.mt.plus-edit.jpg)
 ## ~~吐槽~~
 ~~mt你PY高亮都更新了，就不能更一下js的，icon也是，TS出了Js还是没怎么改(~~
 
