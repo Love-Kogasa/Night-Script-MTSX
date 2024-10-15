@@ -105,8 +105,8 @@
             ]
         }
         "jsx": {
-            start: {match: /\<(?=[^\>]*\>)/}
-            end: {match: /\/[^\>]*\>/}
+            start: {match: /\<(?=[^\>\n]*\>)/}
+            end: {match: /\/[^\>\n]*\>/}
             style: "objname"
             contains: [
                 {match: /\s+[^\ \=\>\<]+\=/, 0: "objkey"}
