@@ -1,6 +1,5 @@
 {
     name: [ "Night-TypeScript", ".ts", ".tsx", ".mts" ]
-    comment: {startsWith: "//"}
     styles: [
         "default", #09A, #AAF
         "string", #C25, #FBB
@@ -25,6 +24,7 @@
         "class": {match: /\s[A-Z]\w*/, 0: "classname"}
         "type": {match: /\:\s*\w*/, 0: "objkey"}
         "cthrow": {match: keywordsToRegex( "throw" ), 0: "errorline" }
+        "commentline": {match: /\/\/.*/, 0: "comment"}
         "keywords": {match: keywordsToRegex(
             "break case catch const continue debugger default delete do else enum extends false finally for if implements instanceof let new null package private protected public return static super switch this with true try typeof var void while yield async await of undefined from in as while for switch case default declare"
         ), 0: "keyword" }
@@ -58,11 +58,44 @@
                 {include: "codec"}
             ]
         }
+        "jsx": {
+            start: {match: /\<(?=[^\>]*\>)/}
+            end: {match: /\/[^\>]*\>/}
+            style: "objname"
+            contains: [
+                {match: /\s+[^\ \=\>\<]+\=/, 0: "objkey"}
+                {builtin: #C_QUOTED_STRING#}
+                {match: /[^\<\>]+(?=\<)/, 0: "string"}
+                {include: "jsxc"}
+            ]
+        }
         "codec": {
             start: {match: /\$\{/}
             end: {match: /\}/}
             style: "keyword"
             contains: [
+                {include: "commentline"}
+                {include: "jsdoc"}
+                {include: "symbols"}
+                {include: "cthrow"}
+                {include: "methods"}
+                {include: "typeval"}
+                {include: "keywords"}
+                {include: "func"}
+                {include: "class"}
+                {include: "obj"}
+                {include: "type"}
+                {include: "tmpstr"}
+                {builtin: #JAVA_NUMBER#}
+                {builtin: #C_QUOTED_STRING#}
+            ]
+        }
+        "jsxc": {
+            start: {match: /\{/}
+            end: {match: /\}/}
+            style: "keyword"
+            contains: [
+                {include: "commentline"}
                 {include: "jsdoc"}
                 {include: "symbols"}
                 {include: "cthrow"}
@@ -81,6 +114,7 @@
     ]
     contains: [
         {match: /\#.*/, 0: "error"}
+        {include: "commentline"}
         {include: "jsdoc"}
         {include: "symbols"}
         {include: "cthrow"}

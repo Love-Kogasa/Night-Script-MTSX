@@ -20,8 +20,31 @@
     ]
     defines: [
         "id": /\b[a-zA-Z_]\w*\b/
+        "commentline": {match: /\/\/.*/, 0: "comment"}
         //"path" : {match: /([^\/\n]+\/)*/, 0: "pathstr" }
         //bug较多 索性去掉了
+        "jsxc": {
+            start: {match: /\{/}
+            end: {match: /\}/}
+            style: "keyword"
+            contains: [
+                {include: "commentline"}
+                {include: "jsdoc"}
+                {include: "single-quoted-string"}
+                {include: "double-quoted-string"}
+                {include: "regex"}
+                {include: "backtick-string"}
+                {include: "dollarExp"}
+                {builtin: #JAVA_NUMBER#}
+                {match: include("id") + /(?= *\()/, 0: "funcname" }
+                {match: include("id") + /\s*\./, 0: "objname" }
+                {match: include("id") + /\s*\:/, 0: "objkey" }
+                {match: /\s[A-Z]\w*/, 0: "classname" }
+            ]
+        }
+        "symbols": {match: keywordsToRegex(
+            "{ } [ ] = ( ) $ > < >= <= ! != == === + - * / % ? | & , ;"
+        ), 0: "symbol" }
         "single-quoted-string": {
             style: "string"
             start: {match: /'/}
@@ -75,10 +98,23 @@
             contains: [
                 {match: /\@\w+/, 0: "objkey"}
                 {match: /[A-Z]+:.+/, 0: "number"}
-                {match: /\?.+/, 0: "string"}
-                {match: /\!.+/, 0: "errorline"}
+                {match: /\?\ +.+/, 0: "string"}
+                {match: /\!\ +.+/, 0: "errorline"}
                 {match: /\ *\w+(?=\s*\-)/, 0: "funcname"}
                 {match: /\w+\[*\]*(?=\})/, 0: "classname"}
+            ]
+        }
+        "jsx": {
+            start: {match: /\<(?=[^\>]*\>)/}
+            end: {match: /\/[^\>]*\>/}
+            style: "objname"
+            contains: [
+                {match: /\s+[^\ \=\>\<]+\=/, 0: "objkey"}
+                {include: "single-quoted-string"}
+                {include: "double-quoted-string"}
+                {match: /[^\<\>]+(?=\<)/, 0: "string"}
+                //{include: "jsx"}
+                {include: "jsxc"}
             ]
         }
         "dollarExp": {
@@ -86,6 +122,8 @@
             end: {match: /\}/}
             style: "keyword"
             contains: [
+                {include: "commentline"}
+                {include: "jsdoc"}
                 {include: "single-quoted-string"}
                 {include: "double-quoted-string"}
                 {include: "regex"}
@@ -100,9 +138,11 @@
         }
     ]
     contains: [
+        {include: "commentline"}
         {include: "jsdoc"}
         {include: "single-quoted-string"}
         {include: "double-quoted-string"}
+        {include: "jsx"}
         {include: "regex"}
         {include: "backtick-string"}
         {builtin: #JAVA_NUMBER#}
@@ -115,9 +155,7 @@
             "new null package private protected public return static super switch this with"
             "true try typeof var void while yield async await of undefined from in as while for switch case default"
         ), 0: "keyword" }
-        {match: keywordsToRegex(
-            "{ } [ ] = ( ) $ > < >= <= ! != == === + - * / % ? | & ,"
-        ), 0: "symbol" }
+        {include: "symbols"}
         {match: keywordsToRegex(
             "throw"
         ), 0: "errorline" }
