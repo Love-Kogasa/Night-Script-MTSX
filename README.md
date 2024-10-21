@@ -5,7 +5,7 @@
 本插件是为手机MT管理器*Javascript开发者*，*Javascript爱好者*编写的一套开源，美观，想对完整，实用，便于开发者阅读/编写代码的语法高亮  
 *Night*是日间模式优先考虑的，习惯用日间模式开发的朋友也能不打折扣的体验到*Night*的美观性  
 如果觉得不错，记得分享给朋友哦，可以分享到各大论坛，不需要经我同意
-## Show 展示图
+## Show 展示图(展示图版本为1.0)
 ### LightMode 日间模式
 ![Screenshot 2024 10 12 22 17 49 375 bin.mt.plus edit](https://postimage.me/images/2024/10/12/Screenshot_2024-10-12-22-17-49-375_bin.mt.plus-edit.jpg)
 ![Screenshot 2024 10 12 22 17 38 000 bin.mt.plus edit](https://postimage.me/images/2024/10/12/Screenshot_2024-10-12-22-17-38-000_bin.mt.plus-edit.jpg)
@@ -39,6 +39,12 @@
 * 支持模板字符串内嵌变量内注释高亮
 * *Jsx/Tsx* 高亮支持
 ![jsx](https://postimage.me/images/2024/10/15/Screenshot_2024-10-15-20-10-34-571_bin.mt.plus-edit.jpg)
+### 1.3beta
+* 增加Json-Mini的高亮 `markup-langs/night-json-mini.mtsx`
+* 增加Cssの高亮并支持颜色预览
+![Screenshot 2024 10 21 19 31 55 717 bin.mt.plus edit](https://postimage.me/images/2024/10/21/Screenshot_2024-10-21-19-31-55-717_bin.mt.plus-edit.jpg)
+* 修复Jsdoc导致的全屏注释bug
+* 为LiveScript增加部分关键字
 ## ~~吐槽~~
 ~~mt你PY高亮都更新了，就不能更一下js的，icon也是，TS出了Js还是没怎么改(~~
 
