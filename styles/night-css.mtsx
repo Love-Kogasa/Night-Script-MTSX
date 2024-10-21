@@ -1,1 +1,49 @@
-
+{
+    name: [ "Night-Style", ".css" ]
+    comment: {startsWith: "//"}
+    comment: {startsWith: "/*", endsWith: "*/"}
+    styles: [
+        "default", #09A, #AAF
+        "string", #C25, #FBB
+        "symbol", #559, #DDE
+        "number", #A10, #F20
+        "funcname", #077, #0FF
+        "objname", #6A6, #DFD
+        "keyword", #959, #FAF, @I
+        "classname", #757, #DAD
+        "objkey", #056, #ADF
+        "value", #449, #AAF
+    ]
+    defines: [
+        "class": {match: /\.[0-9a-zA-Z_\-]+/, 0: "classname" }
+        "id": {match: /(?i)\#[0-9a-z_\-]+/, 0: "parseColor(2,3,HEX,objname)" }
+        "name": {match: /[0-9a-zA-Z_\-]+\s*(?=(\:|\=))/, 0: "objkey"}
+        "funcName" : {match: /[0-9a-zA-Z_\-]+\s*(?=\()/, 0: "funcname"}
+        "wele": {match: /\:\s*\w+\s*\{/, 0: "funcname"}
+        "number": {match: /\b([0-9\.]+(s|px|em|d|deg|\%)*)\b/, 0: "number"}
+        "keywords": {match: /\@\w+/, 0: "keyword"}
+        //"elename" : {match: /[0-9a-zA-Z_\-\:\[\]]+\s*(?=\{)/, 0: "value"}
+        "keywords_": {match: keywordsToRegex(
+            "none block inline-block left right center top bottom solid linear ease in out auto"
+        ), 0: "keyword"}
+        "symbols": {match: keywordsToRegex(
+            "{ } [ ] = ( ) $ > < >= <= ! != == === + - * / % ? | & , ;"
+        ), 0: "symbol" }
+        // 颜色识别From内置语法
+        "color": {match: /#([a-fA-F0-9]{3,6})\b/, 0: "parseColor(auto,1,HEX)"}
+    ]
+    contains: [
+        {include: "number"}
+        {include: "class"}
+        {include: "color"}
+        {include: "id"}
+        {include: "name"}
+        {include: "funcName"}
+        {include: "wele"}
+        {include: "symbols"}
+        {include: "keywords"}
+        {include: "keywords_"}
+        //{include: "elename"}
+        {builtin: #C_QUOTED_STRING#}
+    ]
+}
