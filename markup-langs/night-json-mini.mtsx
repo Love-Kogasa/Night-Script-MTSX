@@ -1,0 +1,23 @@
+{
+  name: ["Night-Json And Xlt", ".json", ".xlt", ".map", ".mcmeta" ]
+  // 特注 : 标准JSON不支持注释！！！
+  comment: {startsWith: "//"}
+  comment: {startsWith: "/*", endsWith: "*/"}
+  styles: [
+    "default", #559, #AAF
+    "string", #C25, #FBB, @I
+    "number", #A10, #F20, @I
+    "keyword", #959, #FAF, @I
+    "objkey", #056, #ADF, @B
+  ]
+  contains: [
+    {match: /\"[^\"\n]+\"\s*\:/, 0: "objkey"}
+    {match: /\"[^\"\n]+\"(?=\s*(\,|\}|\{|\[|\]))/, 0: "string"}
+    {match: /\'[^\'\n]+\'\s*\:/, 0: "objkey"}
+    {match: /\'[^\'\n]+\'(?=\s*(\,|\}|\{|\[|\]))/, 0: "string"}
+    {builtin: #JAVA_NUMBER#}
+    {match: keywordsToRegex(
+      "null true false"
+    ), 0: "keyword"}
+  ]
+}
